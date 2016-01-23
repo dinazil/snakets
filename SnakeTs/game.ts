@@ -1,9 +1,9 @@
 module SnakeTs {
     const enum ArrowKey {
             Left = 37,
-            Down = 38,
+            Up = 38,
             Right = 39,
-            Up = 40
+            Down = 40
     }
         
     export class Game {
@@ -27,7 +27,7 @@ module SnakeTs {
                     direction = Direction.Down;
                     break;
                 case ArrowKey.Right:
-                    direction = Direction.Left;
+                    direction = Direction.Right;
                     break;
                 case ArrowKey.Left:
                     direction = Direction.Left;
