@@ -27,13 +27,23 @@ module SnakeTs {
         public draw(board: Board): void {
             var context = board.DrawingContect;
             
+            context.save();
+            context.strokeStyle = "black";
+            context.fillStyle = "green";
+                
             var l = this._body.length;
             for (var i = 0; i < l; ++i) {
                 var p = this._body[i];
-                var actualLocation = board.convertPoint(p);
-                var actualSize = board.convertLength(1);
-                context.fillRect(actualLocation.x, actualLocation.y, actualSize, actualSize);
+                var actualLocation = board.convertPoint({x: p.x + 0.1, y: p.y + 0.1});
+                var actualSize = board.convertLength(0.8);
+                context.beginPath();
+                context.rect(actualLocation.x, actualLocation.y, actualSize, actualSize);
+                context.closePath();
+                context.fill();
+                context.stroke();
             }
+            
+            context.restore();
         }
         
         public getNextHeadLocation(direction: Direction): Point {
