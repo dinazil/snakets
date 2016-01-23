@@ -37,7 +37,8 @@ module SnakeTs {
         }
         
         public move(direction: Direction): void {
-            var potentialLocation = this._body[0];
+            var head = this._body[0];
+            var potentialLocation =  { x: head.x, y: head.y };
 
             switch (direction) {
                 case Direction.Up:
