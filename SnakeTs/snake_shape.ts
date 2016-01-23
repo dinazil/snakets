@@ -36,30 +36,6 @@ module SnakeTs {
             }
         }
         
-        private canMove(direction: Direction): boolean {
-            if (this._body.length == 1) {
-                return true;
-            }
-
-            var potentialLocation = this._body[0];
-
-            switch (direction) {
-                case Direction.Up:
-                    --potentialLocation.y;
-                    break;
-                case Direction.Down:
-                    ++potentialLocation.y;
-                    break;
-                case Direction.Left:
-                    --potentialLocation.x;
-                    break;
-                case Direction.Right:
-                    ++potentialLocation.x;
-                    break;
-            }             
-            
-        }
-        
         public move(direction: Direction): void {
             var potentialLocation = this._body[0];
 
