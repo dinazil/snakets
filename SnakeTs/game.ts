@@ -8,13 +8,16 @@ module SnakeTs {
         
     export class Game {
         private _board: Board;
-       
-        public constructor(canvas: HTMLCanvasElement, size: ISize, cellSize: number) {
+        
+        public constructor(canvas: HTMLCanvasElement, size: ISize, cellSize: number,
+          private _foodInterval = 5000, 
+          private _foodImage: HTMLImageElement = null) {
             var that = this;
             window.onkeydown = e => {
                 Game.handleKeyPressed(that, e);
-            }
-            this._board = new Board(canvas, size, cellSize);
+            };
+            
+            that._board = new Board(canvas, size, cellSize);
         }
             
         private static handleKeyPressed(context:Game, e: KeyboardEvent) {
@@ -66,8 +69,8 @@ module SnakeTs {
                while (!that._board.isFree(p)) {
                    p = Game.getRandomLocation(that._board.Size);
                }
-               that._board.Food = new FoodShape(p, that._board); 
-            }, 5000);
+               that._board.Food = new FoodShape(p, that._board, that._foodImage); 
+            }, this._foodInterval);
             window.requestAnimationFrame(() => {
                 that.animate(that);
             });
