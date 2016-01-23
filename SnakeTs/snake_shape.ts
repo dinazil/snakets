@@ -14,7 +14,9 @@ module SnakeTs {
         }
         
         public isInside(point: IPoint) : boolean {
-            for (var p in this._body) {
+            var l = this._body.length;
+            for (var i = 0; i < l; ++i) {
+                var p = this._body[i];
                 if (p === point) {
                     return true;
                 }
@@ -25,7 +27,9 @@ module SnakeTs {
         public draw(board: Board): void {
             var context = board.DrawingContect;
             
-            for (var p in this._body) {
+            var l = this._body.length;
+            for (var i = 0; i < l; ++i) {
+                var p = this._body[i];
                 var actualLocation = board.convertPoint(p);
                 var actualSize = board.convertLength(1);
                 context.fillRect(actualLocation.x, actualLocation.y, actualSize, actualSize);
