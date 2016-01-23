@@ -25,8 +25,8 @@ module SnakeTs {
         }
         
         private drawLink(p: IPoint, context: CanvasRenderingContext2D, board:Board): void {
-            var actualLocation = board.convertPoint({x: p.x + 0.1, y: p.y + 0.1});
-            var actualSize = board.convertLength(0.8);
+            var actualLocation = board.convertPoint({x: p.x, y: p.y});
+            var actualSize = board.convertLength(1);
             context.beginPath();
             context.rect(actualLocation.x, actualLocation.y, actualSize, actualSize);
             context.closePath();
