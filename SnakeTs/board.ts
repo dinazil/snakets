@@ -41,6 +41,7 @@ module SnakeTs {
         } 
              
         public draw() : void {
+            this._canvas.getContext("2d").clearRect(0, 0, this._canvas.width, this._canvas.height);
             this.Snake.draw(this);
         }
     }
