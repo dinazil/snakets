@@ -10,11 +10,14 @@ module SnakeTs {
         private _board: Board;
        
         public constructor(canvas: HTMLCanvasElement, size: ISize, cellSize: number) {
-                window.onkeydown = this.handleKeyPressed;
-                this._board = new Board(canvas, size, cellSize);
+            var that = this;
+            window.onkeydown = e => {
+                Game.handleKeyPressed(that, e);
+            }
+            this._board = new Board(canvas, size, cellSize);
         }
             
-        private handleKeyPressed(e: KeyboardEvent) {
+        private static handleKeyPressed(context:Game, e: KeyboardEvent) {
             var direction: Direction;
             switch (e.keyCode) {
                 case ArrowKey.Up:
@@ -32,16 +35,21 @@ module SnakeTs {
                 default:
                     return;    
             }
-            this._board.Snake.move(direction);
+            context._board.Snake.move(direction);
         }
         
-        private animate(): void {
-            this._board.draw();
-            window.requestAnimationFrame(this.animate);
+        private animate(context: Game): void {
+            context._board.draw();
+            window.requestAnimationFrame(() => {
+                context.animate(context);
+            });
         }
         
         public start(): void {
-            window.requestAnimationFrame(this.animate);
+            var that = this;
+            window.requestAnimationFrame(() => {
+                that.animate(that);
+            });
         }
     }
 }
