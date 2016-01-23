@@ -7,17 +7,17 @@ module SnakeTs {
     }
     
     export class SnakeShape implements IShape {
-        private _body: IPoint[] = [];
+        private _body: Point[] = [];
         
         public constructor(location: IPoint, private _board: Board) {
-            this._body.push(location);
+            this._body.push(Point.clone(location));
         }
         
         public isInside(point: IPoint) : boolean {
             var l = this._body.length;
             for (var i = 0; i < l; ++i) {
                 var p = this._body[i];
-                if (p === point) {
+                if (p.equals(point)) {
                     return true;
                 }
             }
@@ -36,9 +36,9 @@ module SnakeTs {
             }
         }
         
-        public move(direction: Direction): void {
+        public getNextHeadLocation(direction: Direction): Point {
             var head = this._body[0];
-            var potentialLocation =  { x: head.x, y: head.y };
+            var potentialLocation =  new Point(head.x, head.y);
 
             switch (direction) {
                 case Direction.Up:
@@ -56,12 +56,30 @@ module SnakeTs {
             }
             
             if (!this._board.isFree(potentialLocation)) {            
-                return; // can't move
+                return null;
+            }
+            return potentialLocation;
+        }
+        
+        public move(direction: Direction): void {
+            var newHead = this.getNextHeadLocation(direction);
+            if (newHead === null) {
+                return;
             }
 
             // move the body
-            this._body.unshift(potentialLocation);
+            this._body.unshift(newHead);
             this._body.pop();
+        }
+        
+        public grow(direction: Direction): void {
+            var newHead = this.getNextHeadLocation(direction);
+            if (newHead === null) {
+                return;
+            }
+
+            // grow in the given direction
+            this._body.unshift(newHead);
         }
     }
 }

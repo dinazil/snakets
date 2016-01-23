@@ -2,19 +2,20 @@ module SnakeTs {
     export class Board {
         public Snake: SnakeShape;
         public DrawingContect: CanvasRenderingContext2D;
+        public Food: FoodShape = null;
         
         public constructor(private _canvas: HTMLCanvasElement,
-            private _size: ISize, private _cellSize: number) {
-                var actualWidth = _cellSize * _size.width;
-                var actualHeight = _cellSize * _size.height;
+            public Size: ISize, private _cellSize: number) {
+                var actualWidth = _cellSize * Size.width;
+                var actualHeight = _cellSize * Size.height;
                 this._canvas.width = actualWidth;
                 this._canvas.height = actualHeight;
                 this._canvas.style.width = actualWidth + "px";
                 this._canvas.style.height = actualHeight + "px";
                 
-                this.Snake = new SnakeShape({ x: Math.floor(_size.width/2),
-                                               y: Math.floor(_size.height/2) 
-                                             }, this);
+                this.Snake = new SnakeShape({ x: Math.floor(Size.width/2),
+                                              y: Math.floor(Size.height/2) 
+                                            }, this);
                                  
                 this.DrawingContect = _canvas.getContext("2d");
         }
@@ -31,10 +32,10 @@ module SnakeTs {
             if (this.Snake.isInside(point)) {
                 return false;
             }
-            if (point.x < 0 || point.x >= this._size.width) {
+            if (point.x < 0 || point.x >= this.Size.width) {
                 return false;
             }
-            if (point.y < 0 || point.y >= this._size.height) {
+            if (point.y < 0 || point.y >= this.Size.height) {
                 return false;
             }
             return true;
@@ -43,6 +44,9 @@ module SnakeTs {
         public draw() : void {
             this._canvas.getContext("2d").clearRect(0, 0, this._canvas.width, this._canvas.height);
             this.Snake.draw(this);
+            if (this.Food !== null) {
+                this.Food.draw(this);                
+            }
         }
     }
 }

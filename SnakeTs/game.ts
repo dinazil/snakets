@@ -35,7 +35,15 @@ module SnakeTs {
                 default:
                     return;    
             }
-            context._board.Snake.move(direction);
+            var nextLocation = context._board.Snake.getNextHeadLocation(direction);
+            if (nextLocation !== null) {
+                if (context._board.Food != null && context._board.Food.isInside(nextLocation)) {
+                    context._board.Snake.grow(direction);
+                    context._board.Food = null;
+                } else {
+                    context._board.Snake.move(direction);
+                }
+            }
         }
         
         private animate(context: Game): void {
@@ -45,8 +53,21 @@ module SnakeTs {
             });
         }
         
+        private static getRandomLocation(size: ISize): Point {
+            var x = Math.floor(size.width * Math.random());
+            var y = Math.floor(size.width * Math.random());
+            return new Point(x, y);
+        }
+        
         public start(): void {
             var that = this;
+            window.setInterval(() => {
+               var p = Game.getRandomLocation(that._board.Size);
+               while (!that._board.isFree(p)) {
+                   p = Game.getRandomLocation(that._board.Size);
+               }
+               that._board.Food = new FoodShape(p, that._board); 
+            }, 5000);
             window.requestAnimationFrame(() => {
                 that.animate(that);
             });
